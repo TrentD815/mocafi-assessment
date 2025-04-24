@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Box, TextField, Button, Typography, Paper, Alert } from '@mui/material';
+import {Box, TextField, Button, Typography, Paper, Alert, Switch, FormControlLabel, Dialog, DialogTitle, DialogContent, DialogActions,} from '@mui/material';
 import { checkBalance } from '../services/api';
 
 export const CardBalanceChecker: React.FC = () => {
@@ -7,10 +7,23 @@ export const CardBalanceChecker: React.FC = () => {
     const [balance, setBalance] = useState<number | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const [requirePin, setRequirePin] = useState(false);
+    const [pinDialogOpen, setPinDialogOpen] = useState(false);
+    const [pin, setPin] = useState('');
 
     const resetForm = () => {
         setError(null);
         setBalance(null);
+        setPin('');
+    };
+
+    const handlePinSubmit = () => {
+        if (pin.length !== 4 || !/^\d+$/.test(pin)) {
+            setError('Please enter a valid 4-digit PIN');
+            return;
+        }
+        setPinDialogOpen(false);
+        handleBalanceCheck();
     };
 
     const handleBalanceCheck = async () => {
@@ -23,7 +36,7 @@ export const CardBalanceChecker: React.FC = () => {
                 throw new Error('Please enter a valid 16-digit card number');
             }
 
-            const response = await checkBalance(cleanCardNumber);
+            const response = await checkBalance(cleanCardNumber, pin);
             setBalance(response.balance);
         } catch (err) {
             setError(err instanceof Error ? err.message : 'An error occurred');
@@ -35,14 +48,19 @@ export const CardBalanceChecker: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         resetForm();
-        handleBalanceCheck();
+
+        if (requirePin) {
+            setPinDialogOpen(true);
+        } else {
+            await handleBalanceCheck();
+        }
     };
 
     return (
         <Box
             component={Paper}
-            sx={{ maxWidth: 400, mx: 'auto', p: 3, border: '1px solid', borderColor: 'divider', borderRadius: 2,
-                backgroundColor: 'white', boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+            sx={{maxWidth: 400, mx: 'auto', p: 3, border: '1px solid', borderColor: 'black', borderRadius: 2,
+                backgroundColor: 'white', boxShadow: '0 8px 32px rgba(0,0,0,0.1)', backdropFilter: 'blur(4px)'
             }}
         >
             <Typography variant="h5" component="h1" gutterBottom>
@@ -52,6 +70,18 @@ export const CardBalanceChecker: React.FC = () => {
             <form onSubmit={handleSubmit}>
                 <TextField fullWidth label="Card Number" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)}
                     margin="normal" placeholder="Enter 16-digit card number" inputProps={{maxLength: 16, pattern: '[0-9]*'}}
+                />
+
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={requirePin}
+                            onChange={(e) => setRequirePin(e.target.checked)}
+                            color="primary"
+                        />
+                    }
+                    label="Require PIN"
+                    sx={{ my: 1 }}
                 />
 
                 <Button fullWidth variant="contained" type="submit" disabled={loading} sx={{ mt: 2 }}>
@@ -72,6 +102,30 @@ export const CardBalanceChecker: React.FC = () => {
                     </Alert>
                 )}
             </form>
+
+            {/* PIN Dialog */}
+            <Dialog
+                open={pinDialogOpen}
+                onClose={() => setPinDialogOpen(false)}
+                maxWidth="xs"
+                fullWidth
+            >
+                <DialogTitle>Enter PIN</DialogTitle>
+                <DialogContent>
+                    <TextField autoFocus margin="dense" label="PIN" type="password" fullWidth value={pin}
+                        onChange={(e) => setPin(e.target.value)} inputProps={{maxLength: 4, pattern: '[0-9]*',}}
+                        placeholder="Enter 4-digit PIN"
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setPinDialogOpen(false)}>
+                        Cancel
+                    </Button>
+                    <Button onClick={handlePinSubmit} variant="contained">
+                        Submit
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

@@ -17,8 +17,11 @@ function App() {
             <Box
                 sx={{
                     minHeight: '100vh',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: 'radial-gradient(#387989, #6dd5ed)',
                     py: 4,
-                    backgroundColor: theme.palette.background.default,
                 }}
             >
                 <Container maxWidth="sm">
