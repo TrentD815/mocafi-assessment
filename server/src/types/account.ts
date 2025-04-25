@@ -12,6 +12,7 @@ export interface Account {
 }
 
 export interface AccountDocument {
+    _id?: string
     user: User;
     account: Account;
 }

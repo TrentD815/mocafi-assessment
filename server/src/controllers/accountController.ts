@@ -16,7 +16,7 @@ export const getBalance = async (req: Request, res: Response) => {
         }
 
         const { db } = await connectToDatabase();
-        const collection = process.env.DB_COLLECTION
+        const collection = process.env.DB_COLLECTION || 'data'
         const accountsCollection = db.collection<AccountDocument>(collection);
         const account = await accountsCollection.findOne({
             'account.cardNumber': cardNumber

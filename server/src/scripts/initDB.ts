@@ -2,7 +2,7 @@ import { connectToDatabase, closeDatabaseConnection } from '../utils/db';
 import { AccountDocument } from '../types/account';
 
 // Below sample data below is for transparency of testing only, the same data is present in my connected live MongoDB
-const sampleAccounts: Omit<AccountDocument, '_id'>[] = [
+const sampleAccounts: AccountDocument[] = [
     {
         user: {
             firstName: "James",
@@ -47,7 +47,7 @@ const sampleAccounts: Omit<AccountDocument, '_id'>[] = [
 async function initializeDatabase() {
     try {
         const { db } = await connectToDatabase();
-        const collection = process.env.DB_COLLECTION
+        const collection = process.env.DB_COLLECTION || 'data'
         const accountsCollection = db.collection<AccountDocument>(collection);
 
         // Drop existing collection if it exists
