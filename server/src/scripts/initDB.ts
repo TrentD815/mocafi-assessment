@@ -1,6 +1,16 @@
 import { connectToDatabase, closeDatabaseConnection } from '../utils/db';
 import { AccountDocument } from '../types/account';
+import { hashPin } from '../utils/hash';
 
+const initializeAccount = async (account: AccountDocument): Promise<AccountDocument> => {
+    return {
+        ...account,
+        account: {
+            ...account.account,
+            pin: await hashPin(account.account.pin)
+        }
+    };
+};
 // Below sample data below is for transparency of testing only, the same data is present in my connected live MongoDB
 const sampleAccounts: AccountDocument[] = [
     {
@@ -55,8 +65,12 @@ async function initializeDatabase() {
             // Ignore error if collection doesn't exist
         });
 
+        // Hash PINs and insert sample data
+        const accountsWithHashedPins = await Promise.all(
+            sampleAccounts.map(initializeAccount)
+        );
         // Insert sample data
-        await accountsCollection.insertMany(sampleAccounts);
+        await accountsCollection.insertMany(accountsWithHashedPins);
 
         console.log('Database initialized with sample data');
     } catch (error) {

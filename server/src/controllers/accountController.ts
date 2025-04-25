@@ -2,16 +2,17 @@ import { Request, Response } from 'express';
 import { connectToDatabase } from '../utils/db';
 import { AccountDocument } from '../types/account';
 import { isCardExpired } from "../utils/cardValidation";
+import { comparePin } from "../utils/hash";
 
 export const getBalance = async (req: Request, res: Response) => {
     try {
         const { cardNumber } = req.params;
-        const { pin } = req.query;
+        const { pin } = req.query || '';
 
         // Validate card number format
         if (!cardNumber || !/^\d{16}$/.test(cardNumber)) {
             return res.status(400).json({
-                error: 'Invalid card number. Please provide a 16-digit number.'
+                error: 'Invalid card number. Please provide a valid card number.'
             });
         }
 
@@ -26,9 +27,12 @@ export const getBalance = async (req: Request, res: Response) => {
                 error: 'Account with provided card number not found'
             });
         }
+
         // If PIN is provided, validate it
         if (pin) {
-            if (pin !== account.account.pin) {
+            //Compare computed hashed value to what's stored in the DB
+            const isPinValid = await comparePin(pin.toString(), account.account.pin);
+            if (!isPinValid) {
                 return res.status(400).json({
                     error: 'Incorrect PIN'
                 });

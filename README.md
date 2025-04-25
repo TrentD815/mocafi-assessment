@@ -23,17 +23,24 @@ Use the below card numbers to test the site.
   - Validation on whether the card is expired
 
 ### Security Focus
-- PINs are obscured in the UI. For the sake of time, card numbers are assumed to be equivalent to a username. 
+- PINs are obscured in the UI. For the sake of time, card numbers are assumed to be equivalent to a username and are not obscured. 
 - Length of card numbers and PINs are not explicitly stated to prevent targeted brute force attacks
+- PINs are stored hashed in the DB and verified on the backend
 - Servers use https and TLS 1.3
-### Out of Scope Future Enhancements
-- Ideally the card numbers and pins should be end-to-end encrypted. PIN should be masked in network
-- You could make some of the error messages more vague to prevent attackers from knowing exactly what they need to brute force
+### Out of Scope Considerations
+- Ideally the card numbers and pins should be end-to-end encrypted. PINs (and potentially card numbers) should be masked across the network
+- You could make some of the error messages more vague to prevent attackers from knowing exactly what they need to brute force.
+Something like 'Invalid card number or PIN' instead of explicitly stating which one
+- Services should be fully network restricted to known networks only such as a VNet or the whitelisted IPs of each service
 ### Stack 
 - Frontend: React, Typescript, Vite
 - Backend: Express, NodeJS, MongoDB
 - Infra & Deployment: Azure, Docker, MongoDB Atlas
+  - 2 separate Azure App Services are currently deployed
 
 ### Folder Structure
 I organized the front and backend folder into a common structure which scales well as the codebase
 grows, It's a bit overkill since there is only 1 file in a lot of the folders, but it's good for demonstration purposes
+
+### Final Thoughts
+Thank you for the challenge!
