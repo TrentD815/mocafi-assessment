@@ -24,7 +24,7 @@ Use the below card numbers to test the site.
 
 ### Security Focus
 - PINs are obscured in the UI. For the sake of time card number are assumed to be equivalent to a username. 
-- 
+- Length of card numbers and PINs are not explicitly stated to prevent targeted brute force attacks
 ### Out of Scope Future Enhancements
 - Ideally the card numbers and pins should be end-to-end encrypted
 - You could make some of the error messages more vague to prevent attackers from knowing exactly what they need to brute force

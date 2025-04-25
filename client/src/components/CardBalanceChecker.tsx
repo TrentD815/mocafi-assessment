@@ -33,7 +33,7 @@ export const CardBalanceChecker: React.FC = () => {
         try {
             const cleanCardNumber = cardNumber.replace(/\D/g, '');
             if (cleanCardNumber.length !== 16) {
-                throw new Error('Please enter a valid 16-digit card number');
+                throw new Error('Please enter a valid card number');
             }
 
             const response = await checkBalance(cleanCardNumber, pin);
@@ -69,7 +69,7 @@ export const CardBalanceChecker: React.FC = () => {
 
             <form onSubmit={handleSubmit}>
                 <TextField fullWidth label="Card Number" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)}
-                    margin="normal" placeholder="Enter 16-digit card number" inputProps={{maxLength: 16, pattern: '[0-9]*'}}
+                    margin="normal" placeholder="Enter card number" inputProps={{maxLength: 50, pattern: '[0-9]*'}}
                 />
 
                 <FormControlLabel
@@ -113,8 +113,8 @@ export const CardBalanceChecker: React.FC = () => {
                 <DialogTitle>Enter PIN</DialogTitle>
                 <DialogContent>
                     <TextField autoFocus margin="dense" label="PIN" type="password" fullWidth value={pin}
-                        onChange={(e) => setPin(e.target.value)} inputProps={{maxLength: 4, pattern: '[0-9]*',}}
-                        placeholder="Enter 4-digit PIN" autoComplete="off"
+                        onChange={(e) => setPin(e.target.value)} inputProps={{maxLength: 50, pattern: '[0-9]*',}}
+                        placeholder="Enter PIN" autoComplete="off"
                     />
                 </DialogContent>
                 <DialogActions>
