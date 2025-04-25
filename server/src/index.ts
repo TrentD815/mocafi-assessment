@@ -10,8 +10,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
+app.options('*', cors())
 app.use(express.json());
+
+app.use(async function(req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+});
 
 // Routes
 app.use('/api', accountRoutes);
@@ -19,7 +24,6 @@ app.use('/api', accountRoutes);
 // Initialize database connection and start server
 async function startServer() {
     try {
-        // Test database connection
         await connectToDatabase();
 
         app.listen(PORT, () => {

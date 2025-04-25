@@ -1,7 +1,7 @@
 ## MoCaFi Assessment | Card Balance Checker
 
 ## Usage and Test Users
-Visit this link to see the live site: 
+Visit the live site here: https://mocafi-client.azurewebsites.net/
 
 ### Test Users/Cards
 Use the below card numbers to test the site. 
@@ -23,18 +23,17 @@ Use the below card numbers to test the site.
   - Validation on whether the card is expired
 
 ### Security Focus
-- PINs are obscured in the UI. For the sake of time card number are assumed to be equivalent to a username. 
+- PINs are obscured in the UI. For the sake of time, card numbers are assumed to be equivalent to a username. 
 - Length of card numbers and PINs are not explicitly stated to prevent targeted brute force attacks
+- Servers use https and TLS 1.3
 ### Out of Scope Future Enhancements
-- Ideally the card numbers and pins should be end-to-end encrypted
+- Ideally the card numbers and pins should be end-to-end encrypted. PIN should be masked in network
 - You could make some of the error messages more vague to prevent attackers from knowing exactly what they need to brute force
 ### Stack 
 - Frontend: React, Typescript, Vite
 - Backend: Express, NodeJS, MongoDB
-- Infra & Deployment: Azure, Github Actions, Docker, MongoDB Atlas
+- Infra & Deployment: Azure, Docker, MongoDB Atlas
 
 ### Folder Structure
 I organized the front and backend folder into a common structure which scales well as the codebase
 grows, It's a bit overkill since there is only 1 file in a lot of the folders, but it's good for demonstration purposes
-
-### Gallery

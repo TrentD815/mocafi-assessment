@@ -1,11 +1,10 @@
 import { MongoClient } from 'mongodb';
 
-const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
-const dbName = process.env.DB_NAME;
-
 let client: MongoClient;
 
 export async function connectToDatabase() {
+    const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
+    const dbName = process.env.DB_NAME
     try {
         if (!client) {
             client = new MongoClient(uri);

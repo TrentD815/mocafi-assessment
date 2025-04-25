@@ -1,3 +1,4 @@
+import React from 'react'
 import { ThemeProvider, CssBaseline, Container, Box } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { CardBalanceChecker } from './components/CardBalanceChecker';
