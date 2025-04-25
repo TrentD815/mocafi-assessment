@@ -114,7 +114,7 @@ export const CardBalanceChecker: React.FC = () => {
                 <DialogContent>
                     <TextField autoFocus margin="dense" label="PIN" type="password" fullWidth value={pin}
                         onChange={(e) => setPin(e.target.value)} inputProps={{maxLength: 4, pattern: '[0-9]*',}}
-                        placeholder="Enter 4-digit PIN"
+                        placeholder="Enter 4-digit PIN" autoComplete="off"
                     />
                 </DialogContent>
                 <DialogActions>

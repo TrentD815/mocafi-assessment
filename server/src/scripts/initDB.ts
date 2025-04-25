@@ -1,6 +1,7 @@
 import { connectToDatabase, closeDatabaseConnection } from '../utils/db';
 import { AccountDocument } from '../types/account';
 
+// Below sample data below is for transparency of testing only, the same data is present in my connected live MongoDB
 const sampleAccounts: Omit<AccountDocument, '_id'>[] = [
     {
         user: {
@@ -10,8 +11,8 @@ const sampleAccounts: Omit<AccountDocument, '_id'>[] = [
         },
         account: {
             cardNumber: "5141000000009082",
-            expiration: "062023",
-            pin: "****",
+            expiration: "072028",
+            pin: "1234",
             balance: 112.38
         }
     },
@@ -23,9 +24,22 @@ const sampleAccounts: Omit<AccountDocument, '_id'>[] = [
         },
         account: {
             cardNumber: "5141000000009844",
-            expiration: "062022",
-            pin: "****",
+            expiration: "062025",
+            pin: "5678",
             balance: 62.78
+        }
+    },
+    {
+        user: {
+            firstName: "John",
+            lastName: "Doe",
+            phone: "5559876543",
+        },
+        account: {
+            cardNumber: "5141000000009999",
+            expiration: "012023", // Past date (expired)
+            pin: "9999",
+            balance: 250.00
         }
     }
 ];
